@@ -121,11 +121,12 @@
 	</div>
 
 	<script>
-		// Name from URL
-		const params = new URLSearchParams(window.location.search);
-		const name = params.get("love");
-		if (name) document.getElementById("name").textContent = name;
-
+		window.addEventListener("DOMContentLoaded", () => {
+			// Name from URL
+			const params = new URLSearchParams(window.location.search);
+			const name = params.get("love");
+			if (name) document.getElementById("name").textContent = name;
+		});
 		const noBtn = document.getElementById("noBtn");
 
 		// Desktop only: click to disappear
@@ -183,3 +184,4 @@
 
 </body>
 </html>
+
