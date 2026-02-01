@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Be My Valentine 💘</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+
+	<style>
+		.btn-wrapper {
+			position: relative;
+			width: 260px;
+			height: 80px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: auto;
+		}
+
+		#noBtn {
+			position: relative;
+			/* normal initially */
+			transition: left 0.25s ease, top 0.25s ease;
+			touch-action: manipulation;
+		}
+
+
+		/* Slow romantic bounce */
+		@keyframes slowBounce {
+
+			0%,
+			100% {
+				transform: translateY(0);
+			}
+
+			50% {
+				transform: translateY(-6px);
+			}
+		}
+
+		.slow-bounce {
+			animation: slowBounce 1.8s ease-in-out infinite;
+		}
+
+		/* Heart confetti */
+		.heart {
+			position: fixed;
+			font-size: 20px;
+			animation: fall 3s linear forwards;
+			pointer-events: none;
+			z-index: 9999;
+		}
+
+		@keyframes fall {
+			0% {
+				transform: translateY(-10vh) scale(1);
+				opacity: 1;
+			}
+
+			100% {
+				transform: translateY(110vh) scale(0.6);
+				opacity: 0;
+			}
+		}
+	</style>
+</head>
+
+<body
+	class="bg-gradient-to-br from-pink-200 via-rose-200 to-red-200 min-h-screen flex items-center justify-center overflow-hidden">
+
+	<!-- Card -->
+	<div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl p-8 max-w-md w-full text-center">
+
+		<h1 class="text-3xl font-bold text-rose-600 mb-4">
+			💖 Hey <span id="name">You</span> 💖
+		</h1>
+
+		<p class="text-lg text-gray-700 italic mb-6">
+			"Tum ho toh Valentine automatic hai,<br>
+			Aur No button sirf formality hai." 😌🌹
+		</p>
+
+		<p class="text-xl font-semibold text-gray-800 mb-8">
+			Would you be my Valentine? 💌
+		</p>
+
+		<div class="btn-wrapper">
+			<button id="yesBtn"
+				class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2 rounded-full text-lg shadow-lg transition">
+				Yes 💘
+			</button>
+
+			<button id="noBtn" class="bg-gray-400 text-white px-6 py-2 rounded-full text-lg shadow-lg">
+				No 😒
+			</button>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center">
+		<div class="bg-white rounded-2xl p-6 max-w-sm text-center slow-bounce">
+			<h2 class="text-2xl font-bold text-rose-600 mb-4">
+				OMG YES 😍🎉
+			</h2>
+
+			<p class="text-gray-700 mb-4 italic">
+				"Tumne Yes bola aur universe khush ho gaya,<br>
+				aur No button ne resignation de diya!" 😄❤️
+			</p>
+
+			<p class="text-lg font-semibold">
+				Warning ⚠️: Extra care, extra love, aur unlimited memes free!" 😄❤️💞
+			</p>
+
+			<button onclick="closeModal()" class="mt-6 bg-rose-500 hover:bg-rose-600 text-white px-6 py-2 rounded-full">
+				Aww 🥹💖
+			</button>
+		</div>
+	</div>
+
+	<script>
+		// Name from URL
+		const params = new URLSearchParams(window.location.search);
+		const name = params.get("love");
+		if (name) document.getElementById("name").textContent = name;
+
+		const noBtn = document.getElementById("noBtn");
+
+		// Desktop only: click to disappear
+		noBtn.addEventListener("click", () => {
+			if (window.matchMedia("(pointer: fine)").matches) {
+				noBtn.style.opacity = "0";
+				noBtn.style.pointerEvents = "none";
+				noBtn.style.transition = "opacity 0.3s ease";
+			}
+		});
+
+		function moveNoButton() {
+			const x = Math.random() * 200 - 100;
+			const y = Math.random() * 100 - 50;
+			noBtn.style.transform = `translate(${x}px, ${y}px)`;
+		}
+
+		// Desktop
+		noBtn.addEventListener("mouseenter", moveNoButton);
+
+		// Mobile
+		noBtn.addEventListener("touchstart", (e) => {
+			e.preventDefault();
+			moveNoButton();
+		});
+
+		// Modal & confetti
+		const modal = document.getElementById("modal");
+		document.getElementById("yesBtn").onclick = () => {
+			modal.classList.remove("hidden");
+			modal.classList.add("flex");
+			launchConfetti();
+		};
+
+		function closeModal() {
+			modal.classList.add("hidden");
+			modal.classList.remove("flex");
+		}
+
+		// 💖 Confetti hearts
+		function launchConfetti() {
+			for (let i = 0; i < 40; i++) {
+				const heart = document.createElement("div");
+				heart.className = "heart";
+				heart.textContent = Math.random() > 0.5 ? "💖" : "💘";
+				heart.style.left = Math.random() * 100 + "vw";
+				heart.style.top = Math.random() * 100 + "vh";
+				heart.style.animationDuration = 2 + Math.random() * 2 + "s";
+				document.body.appendChild(heart);
+
+				setTimeout(() => heart.remove(), 4000);
+			}
+		}
+	</script>
+
+</body>
+
+</html>
